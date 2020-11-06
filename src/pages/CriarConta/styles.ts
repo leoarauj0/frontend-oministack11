@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-import loginBackImg from '../../assets/login.jpg';
+import criarImg from '../../assets/criar.jpg';
 
 export const Container = styled.div`
   height: 100vh;
@@ -42,7 +42,7 @@ export const Conteudo = styled.div`
   }
 
   > a {
-    color: #ff0000;
+    color: #e6e6e6;
     display: block;
     margin-top: 24px;
     text-decoration: none;
@@ -56,13 +56,13 @@ export const Conteudo = styled.div`
     }
 
     &:hover {
-      color: ${shade(0.2, '#ff0000')};
+      color: ${shade(0.2, '#e6e6e6')};
     }
   }
 `;
 
 export const Background = styled.div`
   flex: 1;
-  background: url(${loginBackImg}) no-repeat center;
+  background: url(${criarImg}) no-repeat center;
   background-size: cover;
 `;
