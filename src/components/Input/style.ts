@@ -1,12 +1,17 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+interface ContainerProps {
+  estaFocado: boolean;
+  estaPreenchido: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   background: #312e38;
   border-radius: 10px;
-  border: 2px solid #312e38;
   padding: 16px;
   width: 100%;
 
+  border: 2px solid #312e38;
   color: #666360;
 
   display: flex;
@@ -16,6 +21,18 @@ export const Container = styled.div`
     margin-top: 8px;
   }
 
+  ${(props) =>
+    props.estaFocado &&
+    css`
+      color: #ff0000;
+      border-color: #ff0000;
+    `}
+
+  ${(props) =>
+    props.estaPreenchido &&
+    css`
+      color: #ff0000;
+    `}
   input {
     background: transparent;
     flex: 1;
