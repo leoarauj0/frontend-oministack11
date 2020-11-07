@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FiArrowLeft, FiMail, FiUser, FiLock } from 'react-icons/fi';
 
 import { Form } from '@unform/web';
+import * as Yup from 'yup';
 
 import logoimg from '../../assets/logo.svg';
 
@@ -11,9 +12,23 @@ import Input from '../../components/Input';
 import { Container, Conteudo, Background } from './styles';
 
 const CriarConta: React.FC = () => {
-  function handleSubmit(data: object): void {
-    console.log(data);
-  }
+  const handleSubmit = useCallback(async (data: object) => {
+    try {
+      const schema = Yup.object().shape({
+        nome: Yup.string().required('Nome obrigatório'),
+        email: Yup.string()
+          .required('Email obrigatório')
+          .email('Digite um email válido'),
+        senha: Yup.string().min(6, 'No minimo 6 digitos'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false, // para ele mostrar todos os erros que encontrar e não apenas o primeiro
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <Container>
