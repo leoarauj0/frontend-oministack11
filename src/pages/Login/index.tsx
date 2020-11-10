@@ -1,9 +1,11 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useContext } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
+import { AutenticacaoContexto } from '../../contexto/AutenticacaoContexto';
+
 import pegarErroDeValidacao from '../../utils/pegarErroDeValidacao';
 
 import logoimg from '../../assets/logo.svg';
@@ -13,28 +15,43 @@ import Input from '../../components/Input';
 
 import { Container, Conteudo, Background } from './styles';
 
+interface formDadosLogin {
+  email: string;
+  senha: string;
+}
+
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({});
+  const { login } = useContext(AutenticacaoContexto);
 
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .required('Email obrigatório')
-          .email('Digite um email válido'),
-        senha: Yup.string().required('Senha obrigatória'),
-      });
+  const handleSubmit = useCallback(
+    async (data: formDadosLogin) => {
+      try {
+        formRef.current?.setErrors({});
 
-      await schema.validate(data, {
-        abortEarly: false, // para ele mostrar todos os erros que encontrar e não apenas o primeiro
-      });
-    } catch (err) {
-      const errors = pegarErroDeValidacao(err);
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required('Email obrigatório')
+            .email('Digite um email válido'),
+          senha: Yup.string().required('Senha obrigatória'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false, // para ele mostrar todos os erros que encontrar e não apenas o primeiro
+        });
+
+        login({
+          email: data.email,
+          senha: data.senha,
+        });
+      } catch (err) {
+        const errors = pegarErroDeValidacao(err);
+        formRef.current?.setErrors(errors);
+      }
+    },
+    [login],
+  );
 
   return (
     <Container>
