@@ -23,7 +23,9 @@ interface formDadosLogin {
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { login } = useContext(AutenticacaoContexto);
+  const { usuario, login } = useContext(AutenticacaoContexto);
+
+  console.log(usuario);
 
   const handleSubmit = useCallback(
     async (data: formDadosLogin) => {
