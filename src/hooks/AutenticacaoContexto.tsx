@@ -15,6 +15,7 @@ interface LoginCredenciais {
 interface AuthContextoData {
   usuario: object;
   login(credenciais: LoginCredenciais): Promise<void>;
+  logout(): void;
 }
 const AutenticacaoContexto = createContext<AuthContextoData>(
   {} as AuthContextoData,
@@ -48,8 +49,18 @@ const AutenticacaoProvedor: React.FC = ({ children }) => {
     console.log('Login ok 🤗');
     console.log(res.data);
   }, []);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('@GoBarberWeb:token');
+    localStorage.removeItem('@GoBarberWeb:usuario');
+
+    setData({} as AuthState);
+  }, []);
+
   return (
-    <AutenticacaoContexto.Provider value={{ usuario: data.usuario, login }}>
+    <AutenticacaoContexto.Provider
+      value={{ usuario: data.usuario, login, logout }}
+    >
       {children}
     </AutenticacaoContexto.Provider>
   );

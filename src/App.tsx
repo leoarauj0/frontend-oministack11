@@ -4,7 +4,7 @@ import Login from './pages/Login';
 // import CriarConta from './pages/CriarConta';
 import GlobalStyle from './styles/global';
 
-import { AutenticacaoProvedor } from './contexto/AutenticacaoContexto';
+import { AutenticacaoProvedor } from './hooks/AutenticacaoContexto';
 
 const App: React.FC = () => (
   <>

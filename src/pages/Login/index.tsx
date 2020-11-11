@@ -4,7 +4,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
-import { useAuth } from '../../contexto/AutenticacaoContexto';
+import { useAuth } from '../../hooks/AutenticacaoContexto';
 
 import pegarErroDeValidacao from '../../utils/pegarErroDeValidacao';
 
