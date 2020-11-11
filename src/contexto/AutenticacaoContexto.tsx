@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useState, useContext } from 'react';
 
 import api from '../services/api';
 
@@ -12,11 +12,13 @@ interface LoginCredenciais {
   senha: string;
 }
 
-interface AuthContexto {
+interface AuthContextoData {
   usuario: object;
   login(credenciais: LoginCredenciais): Promise<void>;
 }
-const AutenticacaoContexto = createContext<AuthContexto>({} as AuthContexto);
+const AutenticacaoContexto = createContext<AuthContextoData>(
+  {} as AuthContextoData,
+);
 
 const AutenticacaoProvedor: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
@@ -53,4 +55,14 @@ const AutenticacaoProvedor: React.FC = ({ children }) => {
   );
 };
 
-export { AutenticacaoContexto, AutenticacaoProvedor };
+function useAuth(): AuthContextoData {
+  const contexto = useContext(AutenticacaoContexto);
+
+  if (!contexto) {
+    throw new Error('useAuth deve ser usado um AutenticacaoProvedor');
+  }
+
+  return contexto;
+}
+
+export { AutenticacaoProvedor, useAuth };

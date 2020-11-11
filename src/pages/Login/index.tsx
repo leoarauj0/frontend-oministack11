@@ -1,10 +1,10 @@
-import React, { useRef, useCallback, useContext } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
-import { AutenticacaoContexto } from '../../contexto/AutenticacaoContexto';
+import { useAuth } from '../../contexto/AutenticacaoContexto';
 
 import pegarErroDeValidacao from '../../utils/pegarErroDeValidacao';
 
@@ -23,7 +23,7 @@ interface formDadosLogin {
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { usuario, login } = useContext(AutenticacaoContexto);
+  const { usuario, login } = useAuth();
 
   console.log(usuario);
 
