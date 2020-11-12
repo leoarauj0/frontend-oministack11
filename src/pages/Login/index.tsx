@@ -4,7 +4,8 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
-import { useAuth } from '../../hooks/AutenticacaoContexto';
+import { useAuth } from '../../hooks/Autenticacao';
+import { useToast } from '../../hooks/Toast';
 
 import pegarErroDeValidacao from '../../utils/pegarErroDeValidacao';
 
@@ -23,9 +24,12 @@ interface formDadosLogin {
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { usuario, login } = useAuth();
+  // const { usuario, login } = useAuth();
+  // console.log(usuario);
 
-  console.log(usuario);
+  const { login } = useAuth();
+
+  const { addToast, removeToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: formDadosLogin) => {
@@ -43,16 +47,22 @@ const Login: React.FC = () => {
           abortEarly: false, // para ele mostrar todos os erros que encontrar e não apenas o primeiro
         });
 
-        login({
+        await login({
           email: data.email,
           senha: data.senha,
         });
       } catch (err) {
-        const errors = pegarErroDeValidacao(err);
-        formRef.current?.setErrors(errors);
+        if (err instanceof Yup.ValidationError) {
+          const errors = pegarErroDeValidacao(err);
+          formRef.current?.setErrors(errors);
+        }
+
+        // disparar um toast
+        addToast();
+        removeToast();
       }
     },
-    [login],
+    [login, addToast, removeToast],
   );
 
   return (

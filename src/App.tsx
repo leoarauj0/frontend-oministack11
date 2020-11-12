@@ -4,13 +4,14 @@ import Login from './pages/Login';
 // import CriarConta from './pages/CriarConta';
 import GlobalStyle from './styles/global';
 
-import { AutenticacaoProvedor } from './hooks/AutenticacaoContexto';
+import AppProvedor from './hooks';
 
 const App: React.FC = () => (
   <>
-    <AutenticacaoProvedor>
+    <AppProvedor>
       <Login />
-    </AutenticacaoProvedor>
+    </AppProvedor>
+
     <GlobalStyle />
   </>
 );
