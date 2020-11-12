@@ -58,11 +58,14 @@ const Login: React.FC = () => {
         }
 
         // disparar um toast
-        addToast();
-        removeToast();
+        addToast({
+          type: 'erro',
+          title: 'Erro na autenticação.',
+          descricao: 'Erro ao fazer login. Cheque suas credenciais.',
+        });
       }
     },
-    [login, addToast, removeToast],
+    [login, addToast],
   );
 
   return (

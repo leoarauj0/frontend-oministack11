@@ -1,29 +1,54 @@
 /* eslint-disable no-console */
-import React, { createContext, useCallback, useContext } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+
+import { uuid } from 'uuidv4';
 
 // import { Container } from './styles';
 
 import ToastContainer from '../components/ToastContainer';
 
+export interface ToastMensagens {
+  id: string;
+  type?: 'sucesso' | 'erro' | 'info';
+  title: string;
+  descricao?: string;
+}
+
 interface ToastContextData {
-  addToast(): void;
-  removeToast(): void;
+  addToast(mensagem: Omit<ToastMensagens, 'id'>): void;
+  removeToast(id: string): void;
 }
 const ToastContext = createContext<ToastContextData>({} as ToastContextData);
 
 const ToastProvedor: React.FC = ({ children }) => {
-  const addToast = useCallback(() => {
-    console.log('addToast');
-  }, []);
+  const [mensagens, setMensagens] = useState<ToastMensagens[]>([]);
 
-  const removeToast = useCallback(() => {
-    console.log('removeToast');
+  const addToast = useCallback(
+    ({ type, title, descricao }: Omit<ToastMensagens, 'id'>) => {
+      const id = uuid();
+
+      const toast = {
+        id,
+        type,
+        title,
+        descricao,
+      };
+
+      // quando passamos uma função recebemso por parametro os valores antigos... qu é o que estamos querendo aqui nas mensagens antigas
+      setMensagens((mensagensAntigas) => [...mensagensAntigas, toast]);
+    },
+    [],
+  );
+
+  const removeToast = useCallback((id: string) => {
+    // pega todas as mensagens antigas menos a que tem o mesmo id passado e coloca no SetMensagens.
+    setMensagens((state) => state.filter((mensagem) => mensagem.id !== id));
   }, []);
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      <ToastContainer />
+      <ToastContainer mensagens={mensagens} />
     </ToastContext.Provider>
   );
 };
