@@ -12,6 +12,7 @@ import { Container } from './styles';
 
 interface ToastProps {
   mensagem: ToastMensagens;
+  style: object;
 }
 
 const icones = {
@@ -20,13 +21,13 @@ const icones = {
   sucesso: <FiCheckCircle size={24} />,
 };
 
-const Toast: React.FC<ToastProps> = ({ mensagem }) => {
+const Toast: React.FC<ToastProps> = ({ mensagem, style }) => {
   const { removeToast } = useToast();
 
   useEffect(() => {
     const tempo = setTimeout(() => {
       removeToast(mensagem.id);
-    }, 3000);
+    }, 10000);
 
     // se o compontente deixar de existir ( for excluido com o usuario fechando o toast por ex ) essa função é executada automaticamente
     return () => {
@@ -35,7 +36,11 @@ const Toast: React.FC<ToastProps> = ({ mensagem }) => {
   }, [mensagem.id, removeToast]);
 
   return (
-    <Container type={mensagem.type} temDescricao={!!mensagem.descricao}>
+    <Container
+      type={mensagem.type}
+      temDescricao={!!mensagem.descricao}
+      style={style}
+    >
       {icones[mensagem.type || 'info']}
 
       <div>

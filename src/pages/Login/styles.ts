@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
 import loginBackImg from '../../assets/login.jpg';
@@ -14,10 +14,28 @@ export const Conteudo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  place-content: center;
-
+  justify-content: center;
   width: 100%;
   max-width: 700px;
+`;
+
+const aparecerDaDireita = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+`;
+
+export const AnimacaoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  animation: ${aparecerDaDireita} 1s;
 
   form {
     margin: 80px 0;
